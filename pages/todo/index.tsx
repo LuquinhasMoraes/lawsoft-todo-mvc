@@ -7,6 +7,8 @@ import TodoStore from "../../models/__snapshots__/todo";
 import TodoList from './../../components/TodoList';
 
 import { SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
+import { getSnapshot } from 'mobx-state-tree';
+
 
 
 const { Text, Title, Link } = Typography;
@@ -16,6 +18,7 @@ function Layout() {
 
     const [descriptionTodo, setDescriptionTodo] = useState('');
     const [isAscSort, setIsAscSort] = useState(true);
+    const [typeFilter, setTypeFilter] = useState('all');
 
     function addTodo(e: any) {
         if(e.keyCode === 13) {
@@ -37,7 +40,13 @@ function Layout() {
 
     }
 
+    var tasks: any[] = TodoStore.filteredTasks(typeFilter);
+
+    // console.log(data);
+    
+
     return (
+        
         <>
             <header>
                 <Row justify="center">
@@ -62,19 +71,19 @@ function Layout() {
                             style={{ width: '100%' }} 
                             bordered={true}
                             actions={[
-                                <a key={0} href="setting">{TodoStore.todosLeft} items left</a>,
+                                <a key={0} href="setting">{TodoStore.todosLeftLength} items left</a>,
                                 
                                 <Radio.Group defaultValue="a" buttonStyle="solid" key={1}>
-                                    <Radio.Button value="a">All</Radio.Button>
-                                    <Radio.Button value="b">Active</Radio.Button>
-                                    <Radio.Button onClick={(e) => TodoStore.clearCompleted()}value="c">Completed</Radio.Button>
+                                    <Radio.Button value="a" onClick={(e) => setTypeFilter('all')} >All</Radio.Button>
+                                    <Radio.Button value="b" onClick={(e) => setTypeFilter('active')} >Active</Radio.Button>
+                                    <Radio.Button onClick={(e) => setTypeFilter('completed')} value="c">Completed</Radio.Button>
                                 </Radio.Group>,
 
-                                TodoStore.todosCompleted > 0 ? <Button onClick={(e) => TodoStore.clearCompleted()}>Clear Completed</Button> : null,
+                                TodoStore.todosCompletedLength > 0 ? <Button onClick={(e) => TodoStore.clearCompleted()}>Clear Completed</Button> : null,
                               ]}
                             >
                             
-                            <TodoList />
+                            <TodoList tasks={tasks} />
                             
                         </Card>
 

@@ -5,15 +5,17 @@ import TodoStore, { ITodoSnapshotIn } from './../models/__snapshots__/todo';
 
 import TodoItem from './TodoItem';
 
-function TodoList() {
+interface Props { 
+    tasks: any[];
+}
 
-    var data = getSnapshot(TodoStore);
+const TodoList: React.FC<Props> = ({tasks}) => {
 
     return (
         <List
         itemLayout="horizontal"
-        dataSource={data.todos}
-        pagination={data.todos.length > 5 ? {
+        dataSource={tasks}
+        pagination={tasks.length > 5 ? {
             onChange: page => {
               
             },
