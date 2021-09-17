@@ -4,7 +4,7 @@ import { Radio } from 'antd';
 import { Footer } from "antd/lib/layout/layout";
 import { useState } from "react";
 import TodoStore from "../../models/__snapshots__/todo";
-import TodoList from './TodoList';
+import TodoList from './../../components/TodoList';
 
 import { SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
 
@@ -29,13 +29,8 @@ function Layout() {
     }
 
     function toggleSort() {
-        console.log(isAscSort);
-
         var isAsc = isAscSort;
-
         isAsc = !isAsc;
-
-        console.log(isAsc);
         
         TodoStore.sort(isAsc);
         setIsAscSort(isAsc);
@@ -67,9 +62,9 @@ function Layout() {
                             style={{ width: '100%' }} 
                             bordered={true}
                             actions={[
-                                <a href="setting">{TodoStore.todosLeft} items left</a>,
+                                <a key={0} href="setting">{TodoStore.todosLeft} items left</a>,
                                 
-                                <Radio.Group defaultValue="a" buttonStyle="solid">
+                                <Radio.Group defaultValue="a" buttonStyle="solid" key={1}>
                                     <Radio.Button value="a">All</Radio.Button>
                                     <Radio.Button value="b">Active</Radio.Button>
                                     <Radio.Button onClick={(e) => TodoStore.clearCompleted()}value="c">Completed</Radio.Button>

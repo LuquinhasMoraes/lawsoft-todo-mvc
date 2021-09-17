@@ -1,7 +1,7 @@
 import { List, Checkbox, Input, Button } from 'antd';
 import { observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
-import TodoStore from '../../models/__snapshots__/todo';
+import TodoStore from '../models/__snapshots__/todo';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
@@ -41,12 +41,14 @@ const TodoItem: React.FC<Props> = ({item}) => {
 
             
         <List.Item
+            key={item.id}
             actions={[
             !item.isCompleted ? <Button
             type="primary"
             icon={<EditOutlined />}
             onClick={() => setEditItem(item)}/> : null,  
             <Button
+            key={item.id}
             type="primary"
             danger
             icon={<DeleteOutlined />}
