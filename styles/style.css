@@ -1,0 +1,44 @@
+@import '../node_modules/antd/dist/antd.css';
+
+body {
+    background-color: #F0F2F5;
+    height: 100%;
+}
+
+header {
+    height: 288px;
+    width: 100%;
+    background-color: #001529;
+    
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    
+}
+
+.space > h1 {
+    color: #ffffff;
+    font-size: 60px !important;
+}
+
+.main-row {
+    margin-top: 16px;
+}
+
+.input {
+    padding: 10px;
+    border-radius: 1px !important;
+}
+
+.ant-input-group-wrapper-lg {
+    padding: 0;
+    
+}
+
+.ant-input-group-addon {
+    background-color: #fff;
+    width: 65px;
+}
+
