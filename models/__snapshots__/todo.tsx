@@ -96,7 +96,7 @@ const TodoStore = types
 
         },
         deleteTodo(todo: any) {
-            self.tasks = self.todtasksos.filter((x: any) => x.id !== todo.id);
+            self.tasks = self.tasks.filter((x: any) => x.id !== todo.id);
         },
         sort(isAscSort: boolean) {
             self.tasks = self.tasks.sort((a: any, b: any) => {
