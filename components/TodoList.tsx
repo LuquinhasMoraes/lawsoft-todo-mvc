@@ -7,12 +7,18 @@ import TodoItem from './TodoItem';
 
 function TodoList() {
 
-    const data: ITodoSnapshotIn = getSnapshot(TodoStore);
+    var data = getSnapshot(TodoStore);
 
     return (
         <List
         itemLayout="horizontal"
         dataSource={data.todos}
+        pagination={data.todos.length > 5 ? {
+            onChange: page => {
+              
+            },
+            pageSize: 5,
+        } : false}
         renderItem={item => (
             <TodoItem item={item} />
         )}/>

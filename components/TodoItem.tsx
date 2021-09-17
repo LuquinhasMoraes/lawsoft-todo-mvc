@@ -33,29 +33,38 @@ const TodoItem: React.FC<Props> = ({item}) => {
     }
 
     function deleteTodo(item: any) {
-        console.log(item);
         TodoStore.deleteTodo(item);
     }
 
-    return (
+    function actions(item: any) {
+        return [
+            !item.isCompleted ? <Button type="primary" icon={<EditOutlined />} onClick={() => setEditItem(item)}/> : null,  
+            <Button key={item.id} type="primary" danger icon={<DeleteOutlined />} onClick={() => deleteTodo(item)}/> 
+        ]
+    }
 
-            
+    function avatar(item: any) {
+        return (<Checkbox checked={item.isCompleted} onChange={(e: any) => taskToggle(e.target.checked, item)} />);
+    }
+
+    function title(item: any) {
+
+        var maxLength = 70;
+        var _description = item.description.length >= maxLength ? item.description.substring(0, maxLength) + '...' : item.description;
+
+        return item.isEditing ? 
+        <Input style={{ width: '100%' }} onFocus={(e) => e.target.select()} value={description} onBlur={(e) => editItem(13, item)} onKeyUp={(e: any) => editItem(e.keyCode, item)} onChange={(e: any) => setNewDescription(e.target.value)} autoFocus placeholder="Typing new description" /> 
+        : item.isCompleted ? <Link delete disabled href="#">{_description}</Link> : <a href="#">{_description}</a>
+    }
+
+    return (
+  
         <List.Item
             key={item.id}
-            actions={[
-            !item.isCompleted ? <Button
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={() => setEditItem(item)}/> : null,  
-            <Button
-            key={item.id}
-            type="primary"
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => deleteTodo(item)}/> ]}>
+            actions={actions(item)}>
             <List.Item.Meta
-            avatar={<Checkbox checked={item.isCompleted} onChange={(e: any) => taskToggle(e.target.checked, item)} />}
-            title={ item.isEditing ? <Input style={{ width: '100%' }} onFocus={(e) => e.target.select()} value={description} onBlur={(e) => editItem(13, item)} onKeyUp={(e: any) => editItem(e.keyCode, item)} onChange={(e: any) => setNewDescription(e.target.value)} autoFocus placeholder="Typing new description" /> : item.isCompleted ? <Link delete disabled href="#">{item.description}</Link> : <a href="#">{item.description}</a>}
+            avatar={avatar(item)}
+            title={ title(item) }
             />
         </List.Item>
 
