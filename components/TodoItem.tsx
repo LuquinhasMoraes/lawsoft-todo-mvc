@@ -1,4 +1,4 @@
-import { List, Checkbox, Input, Button } from 'antd';
+import { List, Checkbox, Input, Button, Divider } from 'antd';
 import { observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import TodoStore from '../models/__snapshots__/todo';
@@ -7,7 +7,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { Typography } from 'antd';
 import { useState } from 'react';
-const { Link } = Typography;
+const { Link, Text } = Typography;
 
 interface Props { 
     item: any;
@@ -44,7 +44,7 @@ const TodoItem: React.FC<Props> = ({item}) => {
     }
 
     function avatar(item: any) {
-        return (<Checkbox checked={item.isCompleted} onChange={(e: any) => taskToggle(e.target.checked, item)} />);
+        return (<><Checkbox checked={item.isCompleted} onChange={(e: any) => taskToggle(e.target.checked, item)} /></>);
     }
 
     function title(item: any) {
@@ -54,7 +54,11 @@ const TodoItem: React.FC<Props> = ({item}) => {
 
         return item.isEditing ? 
         <Input style={{ width: '100%' }} onFocus={(e) => e.target.select()} value={description} onBlur={(e) => editItem(13, item)} onKeyUp={(e: any) => editItem(e.keyCode, item)} onChange={(e: any) => setNewDescription(e.target.value)} autoFocus placeholder="Typing new description" /> 
-        : item.isCompleted ? <Link delete disabled href="#">{_description}</Link> : <a href="#">{_description}</a>
+        : item.isCompleted ? <> <Link delete disabled href="#">{_description}</Link> <Divider type="vertical" />  <Text type="secondary" style={{ fontSize: '12px' }} disabled>{item.createAt.toLocaleString()}</Text> </> : <> <a href="#" onClick={() => setEditItem(item)}>{_description}</a> <Divider type="vertical" /> <Text type="secondary" style={{ fontSize: '12px' }}>{item.createAt.toLocaleString()}</Text> </>
+    }
+
+    function getDescription(item: any) {
+        return 'Create at: ' + item.createAt.toLocaleString();
     }
 
     return (

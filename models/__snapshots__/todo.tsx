@@ -3,6 +3,7 @@ import { getSnapshot, Instance, SnapshotIn, SnapshotOut, types } from "mobx-stat
 const Task: any = types.model({
     id: types.number,
     description: types.string,
+    createAt: types.Date,
     isCompleted: types.boolean,
     isEditing: types.boolean,
     disabled: types.boolean,
@@ -81,12 +82,13 @@ const TodoStore = types
         addTodo(_description: string) {
             if(_description != '' && self.todosByDescription(_description) == null) {
 
-                self.tasks.push({
+                self.tasks.unshift({
                     id: Math.random(),
                     description: _description,
                     isCompleted: false,
                     isEditing: false,
                     disabled: true,
+                    createAt: new Date()
                 });
     
                 localStorage.setItem('todos', JSON.stringify(self.tasks));
