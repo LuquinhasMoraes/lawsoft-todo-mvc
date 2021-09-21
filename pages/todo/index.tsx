@@ -37,12 +37,25 @@ function Layout() {
         
         TodoStore.sort(isAsc);
         setIsAscSort(isAsc);
-
     }
 
-    var tasks: any[] = TodoStore.filteredTasks(typeFilter);
+    function actions() {
+        if(TodoStore.todosLength > 0) {
+            return [
+                <a key={0} href="setting">{TodoStore.todosLeftLength} items left</a>,
+                
+                <Radio.Group defaultValue="a" buttonStyle="solid" key={1}>
+                    <Radio.Button value="a" onClick={(e) => setTypeFilter('all')} >All</Radio.Button>
+                    <Radio.Button value="b" onClick={(e) => setTypeFilter('active')} >Active</Radio.Button>
+                    <Radio.Button onClick={(e) => setTypeFilter('completed')} value="c">Completed</Radio.Button>
+                </Radio.Group>,
+    
+                TodoStore.todosCompletedLength > 0 ? <Button onClick={(e) => TodoStore.clearCompleted()}>Clear Completed</Button> : null,
+              ];
+        }
 
-    // console.log(data);
+        return [];
+    }
     
 
     return (
@@ -60,30 +73,20 @@ function Layout() {
             <main>
                 <Row className="main-row" justify="center">
                     <Col span={12}>
-                        {/* <Input.Group compact> */}
-                            <Input
-                             addonBefore={<Checkbox indeterminate={TodoStore.isInderminate()} checked={TodoStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
-                             addonAfter={isAscSort ? <SortAscendingOutlined onClick={() => toggleSort()}/> : <SortDescendingOutlined onClick={() => toggleSort()}/>}
-                             style={{ width: '100%' }} value={descriptionTodo} onKeyUp={(e) => addTodo(e)} onChange={(e) => setDescriptionTodo(e.target.value)} size="large" placeholder="What needs to be done?" className="input" />
-                        {/* </Input.Group> */}
+                        
+                        <Input
+                            addonBefore={<Checkbox disabled={TodoStore.todosLeftLength === 0} indeterminate={TodoStore.isInderminate()} checked={TodoStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
+                            addonAfter={isAscSort ? <SortAscendingOutlined onClick={() => toggleSort()}/> : <SortDescendingOutlined onClick={() => toggleSort()}/>}
+                            style={{ width: '100%' }} value={descriptionTodo} onKeyUp={(e) => addTodo(e)} onChange={(e) => setDescriptionTodo(e.target.value)} size="large" placeholder="What needs to be done?" className="input" />
+                        
 
                         <Card 
                             style={{ width: '100%' }} 
                             bordered={true}
-                            actions={[
-                                <a key={0} href="setting">{TodoStore.todosLeftLength} items left</a>,
-                                
-                                <Radio.Group defaultValue="a" buttonStyle="solid" key={1}>
-                                    <Radio.Button value="a" onClick={(e) => setTypeFilter('all')} >All</Radio.Button>
-                                    <Radio.Button value="b" onClick={(e) => setTypeFilter('active')} >Active</Radio.Button>
-                                    <Radio.Button onClick={(e) => setTypeFilter('completed')} value="c">Completed</Radio.Button>
-                                </Radio.Group>,
-
-                                TodoStore.todosCompletedLength > 0 ? <Button onClick={(e) => TodoStore.clearCompleted()}>Clear Completed</Button> : null,
-                              ]}
+                            actions={actions()}
                             >
                             
-                            <TodoList tasks={tasks} />
+                            <TodoList tasks={TodoStore.filteredTasks(typeFilter)} />
                             
                         </Card>
 

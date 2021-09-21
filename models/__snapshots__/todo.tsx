@@ -16,6 +16,9 @@ const TodoStore = types
 })
 .views((self) => {
     return {
+        get todosLength() {
+            return self.tasks.length
+        },
         get todosLeftLength() {
             return self.tasks.filter((t) => !t.isCompleted).length
         },
