@@ -1,6 +1,6 @@
 import { getSnapshot, Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { parseCookies, setCookie } from "nookies";
-import { ENUMS_MST, Status } from "./enums/Status.enum";
+import { ENUMS_MST, Status } from "../enums/Status.enum";
 
 const Task: any = types.model({
     id: types.number,
@@ -78,7 +78,11 @@ const TodoStore = types
         editItem(newDescription: string, todo: any) {
             self.tasks.forEach((x: any) => {
                 if(x.id === todo.id) {
-                    x.description = newDescription;
+                    
+                    if(newDescription != '' && self.todosByDescription(newDescription) == null) {
+                        x.description = newDescription;
+                    }
+
                     x.status = Status.active;
                 }
             })

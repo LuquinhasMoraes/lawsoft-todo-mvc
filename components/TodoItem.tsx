@@ -7,7 +7,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { Typography } from 'antd';
 import { useState } from 'react';
-import { Status } from '../models/__snapshots__/enums/Status.enum';
+import { Status } from '../models/enums/Status.enum';
 const { Link, Text } = Typography;
 
 interface Props { 
@@ -30,6 +30,7 @@ const TodoItem: React.FC<Props> = ({item}) => {
         window.event?.preventDefault();
         if(keyCode === 13) {
             TodoStore.editItem(description, item);
+            setNewDescription(item.description);
         }
     }
 
