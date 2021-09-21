@@ -75,7 +75,7 @@ function Layout() {
                     <Col span={12}>
                         
                         <Input
-                            addonBefore={<Checkbox disabled={TodoStore.todosLeftLength === 0} indeterminate={TodoStore.isInderminate()} checked={TodoStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
+                            addonBefore={<Checkbox disabled={TodoStore.todosLength === 0} indeterminate={TodoStore.isInderminate()} checked={TodoStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
                             addonAfter={isAscSort ? <SortAscendingOutlined onClick={() => toggleSort()}/> : <SortDescendingOutlined onClick={() => toggleSort()}/>}
                             style={{ width: '100%' }} value={descriptionTodo} onKeyUp={(e) => addTodo(e)} onChange={(e) => setDescriptionTodo(e.target.value)} size="large" placeholder="What needs to be done?" className="input" />
                         
