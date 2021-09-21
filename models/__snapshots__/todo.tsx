@@ -1,10 +1,12 @@
 import { getSnapshot, Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { parseCookies, setCookie } from "nookies";
+import { ENUMS_MST, Status } from "./enums/Status.enum";
 
 const Task: any = types.model({
     id: types.number,
     description: types.string,
     createAt: types.Date,
+    status: types.enumeration("Status", ENUMS_MST.Status),
     isCompleted: types.boolean,
     isEditing: types.boolean,
     disabled: types.boolean,
@@ -20,28 +22,28 @@ const TodoStore = types
             return self.tasks.length
         },
         get todosLeftLength() {
-            return self.tasks.filter((t) => !t.isCompleted).length
+            return self.tasks.filter((t) => t.status === Status.active).length
         },
         get todosCompletedLength() {
-            return self.tasks.filter((t) => t.isCompleted).length
+            return self.tasks.filter((t) => t.status === Status.completed).length
         },
         filteredTasks(type: string) {
             if(type === 'all')
                 return self.tasks;
             else if(type === 'completed')
-                return self.tasks.filter((t) => t.isCompleted);
+                return self.tasks.filter((t) => t.status === Status.completed);
             else
-                return self.tasks.filter((t) => !t.isCompleted);
+                return self.tasks.filter((t) => t.status === Status.active);
         },
         todosByDescription(_description: string) {
             return self.tasks.find((t) => t.description === _description);
         },
         isInderminate() : boolean {
-            const isCompleted = self.tasks.filter(x => x.isCompleted);
+            const isCompleted = self.tasks.filter(x => x.status === Status.completed);
             return isCompleted.length > 0 && isCompleted.length < self.tasks.length;
         },
         isAllChecked() : boolean {
-            const isCompleted = self.tasks.filter(x => x.isCompleted);
+            const isCompleted = self.tasks.filter(x => x.status === Status.completed);
             return self.tasks.length > 0 && isCompleted.length == self.tasks.length;
         }
     }
@@ -53,24 +55,23 @@ const TodoStore = types
         },
         toggleAll(checked: boolean) {
             self.tasks.forEach((x: any) => {
-                x.isCompleted = checked;
-                
+                x.status = checked ? Status.completed : Status.active;
             })
         },
         clearCompleted() {           
-            self.tasks = self.tasks.filter((t: any) => !t.isCompleted);
+            self.tasks = self.tasks.filter((t: any) => t.status === Status.active);
         },
         toggleTodo(checked: boolean, todo: any) {
             self.tasks.forEach((x: any) => {
                 if(x.id === todo.id) {
-                    x.isCompleted = checked;
+                    x.status = checked ? Status.completed : Status.active;
                 }
             })
         },
         setEditingItem(todo: any) {
             self.tasks.forEach((x: any) => {
                 if(x.id === todo.id) {
-                    x.isEditing = true;
+                    x.status = Status.editing;
                 }
             })
         },
@@ -78,7 +79,7 @@ const TodoStore = types
             self.tasks.forEach((x: any) => {
                 if(x.id === todo.id) {
                     x.description = newDescription;
-                    x.isEditing = false;
+                    x.status = Status.active;
                 }
             })
         },
@@ -87,6 +88,7 @@ const TodoStore = types
                 self.tasks.unshift({
                     id: Math.random(),
                     description: _description,
+                    status: Status.active,
                     isCompleted: false,
                     isEditing: false,
                     disabled: true,

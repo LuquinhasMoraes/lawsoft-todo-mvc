@@ -7,6 +7,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { Typography } from 'antd';
 import { useState } from 'react';
+import { Status } from '../models/__snapshots__/enums/Status.enum';
 const { Link, Text } = Typography;
 
 interface Props { 
@@ -38,23 +39,22 @@ const TodoItem: React.FC<Props> = ({item}) => {
 
     function actions(item: any) {
         return [
-            !item.isCompleted ? <Button type="primary" icon={<EditOutlined />} onClick={() => setEditItem(item)}/> : null,  
+            item.status === Status.active ? <Button type="primary" icon={<EditOutlined />} onClick={() => setEditItem(item)}/> : null,  
             <Button key={item.id} type="primary" danger icon={<DeleteOutlined />} onClick={() => deleteTodo(item)}/> 
         ]
     }
 
     function avatar(item: any) {
-        return (<><Checkbox checked={item.isCompleted} onChange={(e: any) => taskToggle(e.target.checked, item)} /></>);
+        return (<><Checkbox checked={item.status === Status.completed} onChange={(e: any) => taskToggle(e.target.checked, item)} /></>);
     }
 
     function title(item: any) {
-
         var maxLength = 70;
         var _description = item.description.length >= maxLength ? item.description.substring(0, maxLength) + '...' : item.description;
 
-        return item.isEditing ? 
+        return item.status === Status.editing ? 
         <Input style={{ width: '100%' }} onFocus={(e) => e.target.select()} value={description} onBlur={(e) => editItem(13, item)} onKeyUp={(e: any) => editItem(e.keyCode, item)} onChange={(e: any) => setNewDescription(e.target.value)} autoFocus placeholder="Typing new description" /> 
-        : item.isCompleted ? <> <Link delete disabled href="#">{_description}</Link> <Divider type="vertical" />  <Text type="secondary" style={{ fontSize: '12px' }} disabled>{item.createAt.toLocaleString()}</Text> </> : <> <a href="#" onClick={() => setEditItem(item)}>{_description}</a> <Divider type="vertical" /> <Text type="secondary" style={{ fontSize: '12px' }}>{item.createAt.toLocaleString()}</Text> </>
+        : item.status === Status.completed ? <> <Link delete disabled href="#">{_description}</Link> <Divider type="vertical" />  <Text type="secondary" style={{ fontSize: '12px' }} disabled>{item.createAt.toLocaleString()}</Text> </> : <> <a href="#" onClick={() => setEditItem(item)}>{_description}</a> <Divider type="vertical" /> <Text type="secondary" style={{ fontSize: '12px' }}>{item.createAt.toLocaleString()}</Text> </>
     }
 
     function getDescription(item: any) {

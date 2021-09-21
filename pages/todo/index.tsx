@@ -7,12 +7,8 @@ import TodoStore from "../../models/__snapshots__/todo";
 import TodoList from './../../components/TodoList';
 
 import { SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
-import { getSnapshot } from 'mobx-state-tree';
 
-
-
-const { Text, Title, Link } = Typography;
-
+const { Text, Title } = Typography;
 
 function Layout() {
 
@@ -57,7 +53,6 @@ function Layout() {
         return [];
     }
     
-
     return (
         
         <>
