@@ -1,4 +1,5 @@
-import { getSnapshot, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { getSnapshot, Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { parseCookies, setCookie } from "nookies";
 
 const Task: any = types.model({
     id: types.number,
@@ -46,7 +47,6 @@ const TodoStore = types
     return {
         reset() {
             self.tasks = [];
-            localStorage.setItem('todos', JSON.stringify(self.tasks));
         },
         toggleAll(checked: boolean) {
             self.tasks.forEach((x: any) => {
@@ -81,7 +81,6 @@ const TodoStore = types
         },
         addTodo(_description: string) {
             if(_description != '' && self.todosByDescription(_description) == null) {
-
                 self.tasks.unshift({
                     id: Math.random(),
                     description: _description,
@@ -90,8 +89,6 @@ const TodoStore = types
                     disabled: true,
                     createAt: new Date()
                 });
-    
-                localStorage.setItem('todos', JSON.stringify(self.tasks));
             }
 
         },
@@ -109,18 +106,24 @@ const TodoStore = types
                 }
                 return 0;
             });
-            localStorage.setItem('todos', JSON.stringify(self.tasks));
         }
     }
 }).create({
-    tasks: []
+    tasks: parseCookies().todos != undefined ? JSON.parse(parseCookies().todos) : []
 });
+
+onSnapshot(TodoStore, snapshot => {
+    const _maxAge = 30 * 24 * 60 * 60;
+    setCookie(null, 'todos', JSON.stringify(snapshot.tasks), {
+        maxAge: _maxAge,
+        path: '/',
+    });
+})
 
 export interface ITodo extends Instance<typeof TodoStore> {}
 
 export interface ITodoSnapshotIn extends SnapshotIn<typeof TodoStore> {}
 
 export interface ITodoSnapshotOut extends SnapshotOut<typeof TodoStore> {}
-
 
 export default TodoStore;
