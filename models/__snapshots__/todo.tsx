@@ -1,4 +1,4 @@
-import { Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { getSnapshot, Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { parseCookies, setCookie } from "nookies";
 import { ENUMS_MST, Status } from "../enums/Status.enum";
 

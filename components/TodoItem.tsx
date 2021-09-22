@@ -17,7 +17,7 @@ interface Props {
 
 const TodoItem: React.FC<Props> = ({item}) => {
 
-    const [description, setNewDescription] = useState(item.description);
+    const [description, setNewDescription] = useState('');
 
     function taskToggle(checked: boolean, todo: any): void {
         GlobalStore.toggleTodo(checked, todo);    
@@ -25,13 +25,14 @@ const TodoItem: React.FC<Props> = ({item}) => {
 
     function setEditItem(item: any) {
         GlobalStore.setEditingItem(item);
+        setNewDescription(item.description);
     }
 
     function editItem(keyCode: any, item: any) {
         window.event?.preventDefault();
         if(keyCode === 13) {
             GlobalStore.editItem(description, item);
-            setNewDescription(item.description);
+            // setNewDescription(item.description);
         }
     }
 
