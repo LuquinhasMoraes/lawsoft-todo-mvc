@@ -88,7 +88,7 @@ function Layout() {
 
                     </Col>
                 </Row>
-                <Footer style={{ textAlign: 'center' }}><Text type="secondary"> Made with ❤️ by Steban. Based on <a className="ant-typography" target="_blank" href="https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality" rel="noopener noreferrer">TodoMVC functionality</a> </Text> </Footer>
+                <Footer style={{ textAlign: 'center' }}><Text type="secondary"> Made with ❤️ by Esteban. Based on <a className="ant-typography" target="_blank" href="https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality" rel="noopener noreferrer">TodoMVC functionality</a> </Text> </Footer>
             </main>
             
         </>
