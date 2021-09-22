@@ -1,7 +1,5 @@
 import { List } from 'antd';
 import { observer } from 'mobx-react';
-import { getSnapshot } from 'mobx-state-tree';
-import TodoStore, { ITodoSnapshotIn } from './../models/__snapshots__/todo';
 
 import TodoItem from './TodoItem';
 

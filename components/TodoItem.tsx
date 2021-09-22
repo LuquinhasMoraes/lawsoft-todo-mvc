@@ -8,6 +8,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Typography } from 'antd';
 import { useState } from 'react';
 import { Status } from '../models/enums/Status.enum';
+import GlobalStore from '../models/__snapshots__/todo';
 const { Link, Text } = Typography;
 
 interface Props { 
@@ -19,23 +20,23 @@ const TodoItem: React.FC<Props> = ({item}) => {
     const [description, setNewDescription] = useState(item.description);
 
     function taskToggle(checked: boolean, todo: any): void {
-        TodoStore.toggleTodo(checked, todo);    
+        GlobalStore.toggleTodo(checked, todo);    
     }
 
     function setEditItem(item: any) {
-        TodoStore.setEditingItem(item);
+        GlobalStore.setEditingItem(item);
     }
 
     function editItem(keyCode: any, item: any) {
         window.event?.preventDefault();
         if(keyCode === 13) {
-            TodoStore.editItem(description, item);
+            GlobalStore.editItem(description, item);
             setNewDescription(item.description);
         }
     }
 
     function deleteTodo(item: any) {
-        TodoStore.deleteTodo(item);
+        GlobalStore.deleteTodo(item);
     }
 
     function actions(item: any) {

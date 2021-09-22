@@ -1,4 +1,4 @@
-import { getSnapshot, Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { parseCookies, setCookie } from "nookies";
 import { ENUMS_MST, Status } from "../enums/Status.enum";
 
@@ -12,12 +12,20 @@ const Task: any = types.model({
     disabled: types.boolean,
 });
 
-const TodoStore = types
+export const TodoStore = types
 .model({
     tasks: types.array(Task)
 })
 .views((self) => {
     return {
+        getHigherTaskId() {
+            if(self.tasks.length < 1) {
+                return 0;
+            } else {
+                const arrayOfIds = self.tasks.map(task => task.id);
+                return Math.max(...arrayOfIds);
+            }
+        },
         get todosLength() {
             return self.tasks.length
         },
@@ -89,8 +97,13 @@ const TodoStore = types
         },
         addTodo(_description: string) {
             if(_description != '' && self.todosByDescription(_description) == null) {
+                
+                const incrementalId = self.getHigherTaskId() + 1;
+
+                console.log(incrementalId);
+                
                 self.tasks.unshift({
-                    id: Math.random(),
+                    id: incrementalId,
                     description: _description,
                     status: Status.active,
                     isCompleted: false,
@@ -117,11 +130,13 @@ const TodoStore = types
             });
         }
     }
-}).create({
+})
+
+var GlobalStore = TodoStore.create({
     tasks: parseCookies().todos != undefined ? JSON.parse(parseCookies().todos) : []
 });
 
-onSnapshot(TodoStore, snapshot => {
+onSnapshot(GlobalStore, snapshot => {
     const _maxAge = 30 * 24 * 60 * 60;
     setCookie(null, 'todos', JSON.stringify(snapshot.tasks), {
         maxAge: _maxAge,
@@ -129,10 +144,10 @@ onSnapshot(TodoStore, snapshot => {
     });
 })
 
-export interface ITodo extends Instance<typeof TodoStore> {}
+export interface ITodo extends Instance<typeof GlobalStore> {}
 
-export interface ITodoSnapshotIn extends SnapshotIn<typeof TodoStore> {}
+export interface ITodoSnapshotIn extends SnapshotIn<typeof GlobalStore> {}
 
-export interface ITodoSnapshotOut extends SnapshotOut<typeof TodoStore> {}
+export interface ITodoSnapshotOut extends SnapshotOut<typeof GlobalStore> {}
 
-export default TodoStore;
+export default GlobalStore;

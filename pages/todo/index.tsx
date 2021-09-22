@@ -7,6 +7,7 @@ import TodoStore from "../../models/__snapshots__/todo";
 import TodoList from './../../components/TodoList';
 
 import { SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
+import GlobalStore from '../../models/__snapshots__/todo';
 
 const { Text, Title } = Typography;
 
@@ -18,27 +19,27 @@ function Layout() {
 
     function addTodo(e: any) {
         if(e.keyCode === 13) {
-            TodoStore.addTodo(descriptionTodo);
+            GlobalStore.addTodo(descriptionTodo);
             setDescriptionTodo('');
         }
     }
 
     function taskToggleAll(e: any) {
-        TodoStore.toggleAll(e.target.checked);
+        GlobalStore.toggleAll(e.target.checked);
     }
 
     function toggleSort() {
         var isAsc = isAscSort;
         isAsc = !isAsc;
         
-        TodoStore.sort(isAsc);
+        GlobalStore.sort(isAsc);
         setIsAscSort(isAsc);
     }
 
     function actions() {
-        if(TodoStore.todosLength > 0) {
+        if(GlobalStore.todosLength > 0) {
             return [
-                <a key={0} href="setting">{TodoStore.todosLeftLength} items left</a>,
+                <a key={0} href="setting">{GlobalStore.todosLeftLength} items left</a>,
                 
                 <Radio.Group defaultValue="a" buttonStyle="solid" key={1}>
                     <Radio.Button value="a" onClick={(e) => setTypeFilter('all')} >All</Radio.Button>
@@ -46,7 +47,7 @@ function Layout() {
                     <Radio.Button onClick={(e) => setTypeFilter('completed')} value="c">Completed</Radio.Button>
                 </Radio.Group>,
     
-                TodoStore.todosCompletedLength > 0 ? <Button onClick={(e) => TodoStore.clearCompleted()}>Clear Completed</Button> : null,
+                GlobalStore.todosCompletedLength > 0 ? <Button onClick={(e) => GlobalStore.clearCompleted()}>Clear Completed</Button> : null,
               ];
         }
 
@@ -70,7 +71,7 @@ function Layout() {
                     <Col span={12}>
                         
                         <Input
-                            addonBefore={<Checkbox disabled={TodoStore.todosLength === 0} indeterminate={TodoStore.isInderminate()} checked={TodoStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
+                            addonBefore={<Checkbox disabled={GlobalStore.todosLength === 0} indeterminate={GlobalStore.isInderminate()} checked={GlobalStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
                             addonAfter={isAscSort ? <SortAscendingOutlined onClick={() => toggleSort()}/> : <SortDescendingOutlined onClick={() => toggleSort()}/>}
                             style={{ width: '100%' }} value={descriptionTodo} onKeyUp={(e) => addTodo(e)} onChange={(e) => setDescriptionTodo(e.target.value)} size="large" placeholder="What needs to be done?" className="input" />
                         
@@ -81,13 +82,13 @@ function Layout() {
                             actions={actions()}
                             >
                             
-                            <TodoList tasks={TodoStore.filteredTasks(typeFilter)} />
+                            <TodoList tasks={GlobalStore.filteredTasks(typeFilter)} />
                             
                         </Card>
 
                     </Col>
                 </Row>
-                <Footer style={{ textAlign: 'center' }}><Text type="secondary"> Made with ❤️ by Esteban. Based on <a className="ant-typography" target="_blank" href="https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality" rel="noopener noreferrer">TodoMVC functionality</a> </Text> </Footer>
+                <Footer style={{ textAlign: 'center' }}><Text type="secondary"> Made with ❤️ by Steban. Based on <a className="ant-typography" target="_blank" href="https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality" rel="noopener noreferrer">TodoMVC functionality</a> </Text> </Footer>
             </main>
             
         </>
