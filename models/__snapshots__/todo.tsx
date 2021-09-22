@@ -99,8 +99,6 @@ export const TodoStore = types
             if(_description != '' && self.todosByDescription(_description) == null) {
                 
                 const incrementalId = self.getHigherTaskId() + 1;
-
-                console.log(incrementalId);
                 
                 self.tasks.unshift({
                     id: incrementalId,
