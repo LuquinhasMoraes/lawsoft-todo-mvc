@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { Button, Card, Col, Input, Typography, Row, Select, Space, Checkbox } from "antd";
+import { Button, Card, Col, Input, Typography, Row, Select, Space, Checkbox, Tag } from "antd";
 import { Radio } from 'antd';
 import { Footer } from "antd/lib/layout/layout";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import TodoList from './../../components/TodoList';
 
 import { SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import GlobalStore from '../../models/__snapshots__/todo';
+import { nextState, previousState } from '../../models/__snapshots__/history';
 
 const { Text, Title } = Typography;
 
@@ -36,6 +37,8 @@ function Layout() {
         setIsAscSort(isAsc);
     }
 
+    
+
     function actions() {
         if(GlobalStore.todosLength > 0) {
             return [
@@ -48,10 +51,15 @@ function Layout() {
                 </Radio.Group>,
     
                 GlobalStore.todosCompletedLength > 0 ? <Button onClick={(e) => GlobalStore.clearCompleted()}>Clear Completed</Button> : null,
+                <>
+                    <Tag>Undo: Ctrl+Z</Tag> 
+                    {/* <Button onClick={(e) => nextState()}>Redo</Button> */}
+                </>
+
               ];
         }
 
-        return [];
+        return [<Button onClick={(e) => previousState()}>Undo</Button>];
     }
     
     return (
