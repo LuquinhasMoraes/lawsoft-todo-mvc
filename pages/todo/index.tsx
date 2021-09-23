@@ -59,7 +59,7 @@ function Layout() {
               ];
         }
 
-        return [<Button onClick={(e) => previousState()}>Undo</Button>];
+        return [<Tag key={5}>Undo: Ctrl+Z</Tag>];
     }
     
     return (
