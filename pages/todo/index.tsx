@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { Button, Card, Col, Input, Typography, Row, Select, Space, Checkbox, Tag } from "antd";
+import { Button, Card, Col, Input, Typography, Row, Select, Space, Checkbox, Tag, Image } from "antd";
 import { Radio } from 'antd';
 import { Footer } from "antd/lib/layout/layout";
 import { useState } from "react";
@@ -19,10 +19,8 @@ function Layout() {
     const [typeFilter, setTypeFilter] = useState('all');
 
     function addTodo(e: any) {
-        if(e.keyCode === 13) {
-            GlobalStore.addTodo(descriptionTodo);
-            setDescriptionTodo('');
-        }
+        GlobalStore.addTodo(descriptionTodo);
+        setDescriptionTodo('');
     }
 
     function taskToggleAll(e: any) {
@@ -68,7 +66,7 @@ function Layout() {
             <header>
                 <Row justify="center">
                     <Space className="space" direction="horizontal" style={{width: '100%', height: 288, justifyContent: 'center'}}>
-                        <img src="/img/logo.png" alt="Logo" height="165" />
+                        <Image src="/img/logo.png" alt="Logo" width={170} />
                         <Title style={{color: 'white'}}>Lawsoft TodoMVC</Title>
                     </Space>
                 </Row>
@@ -81,7 +79,7 @@ function Layout() {
                         <Input
                             addonBefore={<Checkbox disabled={GlobalStore.todosLength === 0} indeterminate={GlobalStore.isInderminate()} checked={GlobalStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
                             addonAfter={isAscSort ? <SortAscendingOutlined onClick={() => toggleSort()}/> : <SortDescendingOutlined onClick={() => toggleSort()}/>}
-                            style={{ width: '100%' }} value={descriptionTodo} onKeyUp={(e) => addTodo(e)} onChange={(e) => setDescriptionTodo(e.target.value)} size="large" placeholder="What needs to be done?" className="input" />
+                            style={{ width: '100%' }} value={descriptionTodo} onPressEnter={(e) => addTodo(e)} onChange={(e) => setDescriptionTodo(e.target.value)} size="large" placeholder="What needs to be done?" className="input" />
                         
 
                         <Card 
