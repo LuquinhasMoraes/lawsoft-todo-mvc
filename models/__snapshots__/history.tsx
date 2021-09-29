@@ -10,12 +10,9 @@ var currentFrame = 0
 states.push(getSnapshot(store));
 
 onSnapshot(store, snapshot => {
-
-    
     if (currentFrame === states.length - 1) {
         currentFrame++
         states.push(snapshot)
-        console.log(currentFrame, states)
     }
 })
 

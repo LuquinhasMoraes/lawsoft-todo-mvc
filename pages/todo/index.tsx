@@ -1,26 +1,27 @@
 import { observer } from 'mobx-react';
-import { Button, Card, Col, Input, Typography, Row, Select, Space, Checkbox, Tag, Image } from "antd";
+import { Button, Card, Col, Input, Typography, Row, Select, Space, Checkbox, Tag, Image, Form, FormInstance } from "antd";
 import { Radio } from 'antd';
 import { Footer } from "antd/lib/layout/layout";
-import { useState } from "react";
-import TodoStore from "../../models/__snapshots__/todo";
+import React, { useState } from "react";
 import TodoList from './../../components/TodoList';
 
 import { SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import GlobalStore from '../../models/__snapshots__/todo';
-import { nextState, previousState } from '../../models/__snapshots__/history';
 
 const { Text, Title } = Typography;
 
 function Layout() {
 
+    const formRef = React.createRef<FormInstance>();
     const [descriptionTodo, setDescriptionTodo] = useState('');
     const [isAscSort, setIsAscSort] = useState(true);
     const [typeFilter, setTypeFilter] = useState('all');
 
     function addTodo(e: any) {
-        GlobalStore.addTodo(descriptionTodo);
-        setDescriptionTodo('');
+        if(descriptionTodo != '') {
+            GlobalStore.addTodo(descriptionTodo);
+            formRef.current!.resetFields();
+        }
     }
 
     function taskToggleAll(e: any) {
@@ -50,8 +51,7 @@ function Layout() {
     
                 GlobalStore.todosCompletedLength > 0 ? <Button onClick={(e) => GlobalStore.clearCompleted()}>Clear Completed</Button> : null,
                 <>
-                    <Tag>Undo: Ctrl+Z</Tag> 
-                    {/* <Button onClick={(e) => nextState()}>Redo</Button> */}
+                    <Tag color="blue">Undo: Ctrl+Z</Tag> 
                 </>
 
               ];
@@ -76,11 +76,24 @@ function Layout() {
                 <Row className="main-row" justify="center">
                     <Col span={12}>
                         
-                        <Input
-                            addonBefore={<Checkbox disabled={GlobalStore.todosLength === 0} indeterminate={GlobalStore.isInderminate()} checked={GlobalStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
-                            addonAfter={isAscSort ? <SortAscendingOutlined onClick={() => toggleSort()}/> : <SortDescendingOutlined onClick={() => toggleSort()}/>}
-                            style={{ width: '100%' }} value={descriptionTodo} onPressEnter={(e) => addTodo(e)} onChange={(e) => setDescriptionTodo(e.target.value)} size="large" placeholder="What needs to be done?" className="input" />
-                        
+                        <Form
+                        ref={formRef}
+                        name="normal_login"
+                        className="login-form"
+                        initialValues={{ remember: true }}
+                        >
+                            <Form.Item
+                                name="descriptionTodo"
+                                style={{marginBottom: 0}}
+                                rules={[{ required: true, message: 'Enter a task!' }]}
+                            >
+                            <Input      
+                                addonBefore={<Checkbox disabled={GlobalStore.todosLength === 0} indeterminate={GlobalStore.isInderminate()} checked={GlobalStore.isAllChecked()} onChange={(e: any) => taskToggleAll(e)} />}
+                                addonAfter={isAscSort ? <SortAscendingOutlined onClick={() => toggleSort()}/> : <SortDescendingOutlined onClick={() => toggleSort()}/>}
+                                style={{ width: '100%' }} value={descriptionTodo} onPressEnter={(e) => { addTodo(e);}} onChange={(e) => setDescriptionTodo(e.target.value)} size="large" placeholder="What needs to be done?" className="input" />
+                            </Form.Item>
+                        </Form> 
+                         
 
                         <Card 
                             style={{ width: '100%' }} 
@@ -92,9 +105,12 @@ function Layout() {
                             
                         </Card>
 
+                          
+
+
                     </Col>
                 </Row>
-                <Footer style={{ textAlign: 'center' }}><Text type="secondary"> Made with ❤️ by Esteban. Based on <a className="ant-typography" target="_blank" href="https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality" rel="noopener noreferrer">TodoMVC functionality</a> </Text> </Footer>
+                <Footer style={{ textAlign: 'center' }}><Text type="secondary"> Made with ❤️ by Lawsoft Team. Based on <a className="ant-typography" target="_blank" href="https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality" rel="noopener noreferrer">TodoMVC functionality</a> </Text> </Footer>
             </main>
             
         </>
