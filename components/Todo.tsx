@@ -48,10 +48,9 @@ function Layout() {
                     <Radio.Button onClick={(e) => TaskStore.setFilter('completed')} value="c">Completed</Radio.Button>
                 </Radio.Group>,
 
-                GlobalStore.todosCompletedLength > 0 ? <Button onClick={(e) => GlobalStore.clearCompleted()}>Clear Completed</Button> : null,
+                <Button disabled={GlobalStore.todosCompletedLength == 0} onClick={(e) => GlobalStore.clearCompleted()}>Clear Completed</Button>,
                 <>
                     <Tag color="blue">Undo: Ctrl+Z</Tag>
-                    {/* <Tag color="blue">Redo: Ctrl+Y</Tag> */}
                 </>
 
             ];

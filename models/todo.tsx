@@ -27,7 +27,7 @@ export const TodoStore = types
             return self.tasks.length
         },
         get todosLeftLength() {
-            return self.tasks.filter((t) => t.status === Status.active).length
+            return self.tasks.filter((t) => t.status === Status.active || t.status === Status.editing).length
         },
         get todosCompletedLength() {
             return self.tasks.filter((t) => t.status === Status.completed).length
@@ -109,6 +109,9 @@ export const TodoStore = types
         },
         deleteTodo(todo: any) {
             self.tasks.remove(todo);
+        },
+        setNewOrderedItems(orderedTasks: any[]) {
+            self.tasks = orderedTasks;
         },
         sort(isAscSort: boolean) {
             self.tasks = self.tasks.sort((a: any, b: any) => {

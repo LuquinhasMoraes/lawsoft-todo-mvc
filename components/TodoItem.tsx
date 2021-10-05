@@ -39,13 +39,17 @@ const TodoItem: React.FC<Props> = ({item}) => {
         GlobalStore.deleteTodo(item);
     }
 
-    const DragHandle = SortableHandle(() => <MenuOutlined style={{ cursor: 'grab', color: '#999' }} />);
+    const DragHandle = SortableHandle(() => <List.Item.Meta
+        style={{ cursor: 'grab', color: '#999' }}
+        avatar={avatar(item)}
+        title={ title(item) }
+        />
+    );
 
     function actions(item: any) {
         return [
             item.status === Status.active ? <Button type="primary" icon={<EditOutlined />} onClick={() => setEditItem(item)}/> : null,  
             <Button key={item.id} type="primary" danger icon={<DeleteOutlined />} onClick={() => deleteTodo(item)}/> ,
-            <DragHandle />
         ]
     }
 
@@ -59,7 +63,7 @@ const TodoItem: React.FC<Props> = ({item}) => {
 
         return item.status === Status.editing ? 
         <Input style={{ width: '100%' }} onFocus={(e) => e.target.select()} value={description} onBlur={(e) => editItem(13, item)} onKeyUp={(e: any) => editItem(e.keyCode, item)} onChange={(e: any) => setNewDescription(e.target.value)} autoFocus placeholder="Typing new description" /> 
-        : item.status === Status.completed ? <> <Link delete disabled href="#">{_description}</Link> <Divider type="vertical" />  <Text type="secondary" style={{ fontSize: '12px' }} disabled>{item.createAt.toLocaleString()}</Text> </> : <> <a href="#" onClick={() => setEditItem(item)}>{_description}</a> <Divider type="vertical" /> <Text type="secondary" style={{ fontSize: '12px' }}>{item.createAt.toLocaleString()}</Text> </>
+        : item.status === Status.completed ? <> <Text delete disabled>{_description}</Text> <Divider type="vertical" />  <Text type="secondary" style={{ fontSize: '12px' }} disabled>{item.createAt.toLocaleString()}</Text> </> : <> {_description} <Divider type="vertical" /> <Text type="secondary" style={{ fontSize: '12px' }}>{item.createAt.toLocaleString()}</Text> </>
     }
 
     function getDescription(item: any) {
@@ -72,10 +76,7 @@ const TodoItem: React.FC<Props> = ({item}) => {
         <List.Item
             key={item.id}
             actions={actions(item)}>
-            <List.Item.Meta
-            avatar={avatar(item)}
-            title={ title(item) }
-            />
+            <DragHandle />
         </List.Item>
 
     )

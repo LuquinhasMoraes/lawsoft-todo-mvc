@@ -14,3 +14,21 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.row-dragging {
+  background: #fafafa;
+  border: 1px solid #ccc;
+  padding: 15px !important;
+}
+
+.content-dragging {
+  background: #666;
+}
+
+.row-dragging td {
+  padding: 16px;
+}
+
+.row-dragging .drag-visible {
+  visibility: visible;
+}

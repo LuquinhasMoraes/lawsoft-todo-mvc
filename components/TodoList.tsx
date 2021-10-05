@@ -1,7 +1,9 @@
 import { List } from 'antd';
 import { arrayMoveImmutable } from 'array-move';
 import { observer } from 'mobx-react';
+import { getSnapshot } from 'mobx-state-tree';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import GlobalStore from '../models/todo';
 
 import TodoItem from './TodoItem';
 
@@ -11,12 +13,11 @@ interface Props {
 
 const TodoList: React.FC<Props> = ({ tasks }) => {
 
-    function onSortEnd (oldIndex: any, newIndex: any) {
+    function onSortEnd (event: any) {
         
-        if (oldIndex !== newIndex) {
-          const newData = arrayMoveImmutable([].concat(...tasks), oldIndex, newIndex).filter(el => !!el);
-          console.log('Sorted items: ', newData);
-        //   this.setState({ dataSource: newData });
+        if (event.oldIndex !== event.newIndex) {
+          const newData = arrayMoveImmutable([].concat(...tasks), event.oldIndex, event.newIndex).filter(el => !!el);
+          GlobalStore.setNewOrderedItems(newData);
         }
       };
 
@@ -24,23 +25,12 @@ const TodoList: React.FC<Props> = ({ tasks }) => {
 
     const SortableContent = SortableContainer((props: any) => <div {...props} />);
 
-    const DraggableContainer = (props: any) => (
-        <SortableContent
-            useDragHandle
-            disableAutoscroll
-            helperClass="row-dragging"
-            onSortEnd={onSortEnd}
-            {...props}
-        />
-    );
-
-
     return (
         <SortableContent
             useDragHandle
             disableAutoscroll
             helperClass="row-dragging"
-            onSortEnd={() => console.log()}
+            onSortEnd={onSortEnd}
         >
             <List
                 itemLayout="horizontal"
