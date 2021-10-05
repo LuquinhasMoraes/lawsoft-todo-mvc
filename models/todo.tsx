@@ -1,15 +1,12 @@
-import { getSnapshot, Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, onSnapshot, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { parseCookies, setCookie } from "nookies";
-import { ENUMS_MST, Status } from "../enums/Status.enum";
+import { ENUMS_MST, Status } from "./enums/Status.enum";
 
 const Task: any = types.model({
     id: types.number,
     description: types.string,
     createAt: types.Date,
-    status: types.enumeration("Status", ENUMS_MST.Status),
-    isCompleted: types.boolean,
-    isEditing: types.boolean,
-    disabled: types.boolean,
+    status: types.enumeration("Status", ENUMS_MST.Status)
 });
 
 export const TodoStore = types
@@ -36,12 +33,12 @@ export const TodoStore = types
             return self.tasks.filter((t) => t.status === Status.completed).length
         },
         filteredTasks(type: string) {
-            if(type === 'all')
-                return self.tasks;
+            if(type === 'active')
+                return self.tasks.filter((t) => t.status === Status.active);
             else if(type === 'completed')
                 return self.tasks.filter((t) => t.status === Status.completed);
             else
-                return self.tasks.filter((t) => t.status === Status.active);
+                return self.tasks;
         },
         todosByDescription(_description: string) {
             return self.tasks.find((t) => t.description === _description);
@@ -86,11 +83,9 @@ export const TodoStore = types
         editItem(newDescription: string, todo: any) {
             self.tasks.forEach((x: any) => {
                 if(x.id === todo.id) {
-                    
                     if(newDescription != '' && self.todosByDescription(newDescription) == null) {
                         x.description = newDescription;
                     }
-
                     x.status = Status.active;
                 }
             })
@@ -113,7 +108,7 @@ export const TodoStore = types
 
         },
         deleteTodo(todo: any) {
-            self.tasks = self.tasks.filter((x: any) => x.id !== todo.id);
+            self.tasks.remove(todo);
         },
         sort(isAscSort: boolean) {
             self.tasks = self.tasks.sort((a: any, b: any) => {

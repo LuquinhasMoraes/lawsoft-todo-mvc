@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "pages/todo/ola.js"  ],
   "exclude": [
     "node_modules"
   ]

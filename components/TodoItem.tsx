@@ -1,14 +1,13 @@
 import { List, Checkbox, Input, Button, Divider } from 'antd';
 import { observer } from 'mobx-react';
-import { getSnapshot } from 'mobx-state-tree';
-import TodoStore from '../models/__snapshots__/todo';
+import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, MenuOutlined } from '@ant-design/icons';
 
 import { Typography } from 'antd';
 import { useState } from 'react';
 import { Status } from '../models/enums/Status.enum';
-import GlobalStore from '../models/__snapshots__/todo';
+import GlobalStore from '../models/todo';
 const { Link, Text } = Typography;
 
 interface Props { 
@@ -40,10 +39,13 @@ const TodoItem: React.FC<Props> = ({item}) => {
         GlobalStore.deleteTodo(item);
     }
 
+    const DragHandle = SortableHandle(() => <MenuOutlined style={{ cursor: 'grab', color: '#999' }} />);
+
     function actions(item: any) {
         return [
             item.status === Status.active ? <Button type="primary" icon={<EditOutlined />} onClick={() => setEditItem(item)}/> : null,  
-            <Button key={item.id} type="primary" danger icon={<DeleteOutlined />} onClick={() => deleteTodo(item)}/> 
+            <Button key={item.id} type="primary" danger icon={<DeleteOutlined />} onClick={() => deleteTodo(item)}/> ,
+            <DragHandle />
         ]
     }
 
@@ -63,6 +65,7 @@ const TodoItem: React.FC<Props> = ({item}) => {
     function getDescription(item: any) {
         return 'Create at: ' + item.createAt.toLocaleString();
     }
+
 
     return (
   

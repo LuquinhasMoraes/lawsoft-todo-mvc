@@ -1,11 +1,13 @@
 import { applySnapshot, getSnapshot, onSnapshot } from 'mobx-state-tree';
-import GlobalStore from './todo';
+import GlobalStore from '../todo';
 
 var store = GlobalStore;
 
 
 var states: any[] = [];
+var undoneStates: any[] = [];
 var currentFrame = 0
+var currentFrameUndone = 0
 
 states.push(getSnapshot(store));
 
@@ -21,14 +23,20 @@ export function previousState() {
 
     --currentFrame
     applySnapshot(store, states[currentFrame]);
+    
+    undoneStates.unshift(states[currentFrame]);
+
     states.splice(states.length - 1, 1);
     console.log(currentFrame, states)
+    console.log(undoneStates, states)
 }
 
 export function nextState() {
-    if (currentFrame === states.length - 1) return
-
-    currentFrame++
-    console.log(currentFrame, states[currentFrame])
-    applySnapshot(store, states[currentFrame])
+    console.log(undoneStates, currentFrameUndone)
+    if (currentFrameUndone === undoneStates.length) return
+    console.log(currentFrameUndone, undoneStates[currentFrameUndone])
+    applySnapshot(store, undoneStates[currentFrameUndone])
+    // undoneStates.splice(undoneStates.length - 1, 1);
+    currentFrameUndone++;
+    
 }
