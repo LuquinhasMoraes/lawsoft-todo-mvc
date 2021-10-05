@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 
 export const Utils = types
 .model({
+    isDragging: types.boolean,
     taskDescription: types.string,
     typeFilter: types.string,
 })
@@ -9,6 +10,9 @@ export const Utils = types
     return {
         reset() {
             self.taskDescription = '';
+        },
+        setIsDragging(isDragging: boolean) {
+            self.isDragging = isDragging;
         },
         setDescriptionTask(value: string) {
             self.taskDescription = value;
@@ -21,7 +25,8 @@ export const Utils = types
 
 var UtilsStore = Utils.create({
     taskDescription: '',
-    typeFilter: 'All'
+    typeFilter: 'All',
+    isDragging: false
 });
 
 export interface ITodo extends Instance<typeof UtilsStore> {}

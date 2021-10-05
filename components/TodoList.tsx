@@ -3,6 +3,7 @@ import { arrayMoveImmutable } from 'array-move';
 import { observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import UtilsStore from '../models/task';
 import GlobalStore from '../models/todo';
 
 import TodoItem from './TodoItem';
@@ -19,7 +20,13 @@ const TodoList: React.FC<Props> = ({ tasks }) => {
           const newData = arrayMoveImmutable([].concat(...tasks), event.oldIndex, event.newIndex).filter(el => !!el);
           GlobalStore.setNewOrderedItems(newData);
         }
-      };
+
+        UtilsStore.setIsDragging(false);
+    }
+
+    function onSortStart(event: any) {
+        UtilsStore.setIsDragging(true);
+    }
 
     const SortableItem = SortableElement((props: any, item: any) => <TodoItem item={item} {...props} />);
 
@@ -31,6 +38,7 @@ const TodoList: React.FC<Props> = ({ tasks }) => {
             disableAutoscroll
             helperClass="row-dragging"
             onSortEnd={onSortEnd}
+            onSortStart={onSortStart}
         >
             <List
                 itemLayout="horizontal"
@@ -42,9 +50,7 @@ const TodoList: React.FC<Props> = ({ tasks }) => {
                     pageSize: 5,
                 } : false}
                 renderItem={(item, index) => (
-
                     <SortableItem index={index} item={item} {...item} />
-                    // <TodoItem item={item} />
                 )} />
         </SortableContent>
 

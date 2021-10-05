@@ -8,6 +8,7 @@ import TodoList from './TodoList';
 import { SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import GlobalStore from './../models/todo';
 import TaskStore from './../models/task';
+import UtilsStore from './../models/task';
 
 const { Text, Title } = Typography;
 
@@ -95,7 +96,7 @@ function Layout() {
 
 
                         <Card
-                            style={{ width: '100%' }}
+                            style={UtilsStore.isDragging ? { width: '100%', background: 'rgb(210, 241, 253)'} : {width: '100%'}}
                             bordered={true}
                             actions={actions()}
                         >
