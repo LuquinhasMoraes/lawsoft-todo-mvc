@@ -1,6 +1,6 @@
 import { List, Checkbox, Input, Button, Divider } from 'antd';
 import { observer } from 'mobx-react';
-import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
+import { SortableHandle } from 'react-sortable-hoc';
 
 import { DeleteOutlined, EditOutlined, MenuOutlined } from '@ant-design/icons';
 
@@ -31,7 +31,6 @@ const TodoItem: React.FC<Props> = ({item}) => {
         window.event?.preventDefault();
         if(keyCode === 13) {
             GlobalStore.editItem(description, item);
-            // setNewDescription(item.description);
         }
     }
 

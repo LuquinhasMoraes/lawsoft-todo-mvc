@@ -3,7 +3,7 @@ import { arrayMoveImmutable } from 'array-move';
 import { observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-import UtilsStore from '../models/task';
+import UtilsStore from '../models/utils';
 import GlobalStore from '../models/todo';
 
 import TodoItem from './TodoItem';
@@ -21,7 +21,7 @@ const TodoList: React.FC<Props> = ({ tasks }) => {
           GlobalStore.setNewOrderedItems(newData);
         }
 
-        UtilsStore.setIsDragging(false);
+        UtilsStore.setIsDragging(false)
     }
 
     function onSortStart(event: any) {

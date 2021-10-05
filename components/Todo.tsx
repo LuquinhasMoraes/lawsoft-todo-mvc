@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { Button, Card, Col, Input, Typography, Row, Select, Space, Checkbox, Tag, Image, Form, FormInstance } from "antd";
+import { Button, Card, Col, Input, Typography, Row, Space, Checkbox, Tag, Image, Form, FormInstance } from "antd";
 import { Radio } from 'antd';
 import { Footer } from "antd/lib/layout/layout";
 import React, { useState } from "react";
@@ -7,8 +7,8 @@ import TodoList from './TodoList';
 
 import { SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import GlobalStore from './../models/todo';
-import TaskStore from './../models/task';
-import UtilsStore from './../models/task';
+import TaskStore from '../models/utils';
+import UtilsStore from '../models/utils';
 
 const { Text, Title } = Typography;
 
@@ -21,7 +21,6 @@ function Layout() {
         if (TaskStore.taskDescription != '') {
             GlobalStore.addTodo(TaskStore.taskDescription);
             formRef.current!.resetFields();
-            console.log(e);
         }
     }
 
@@ -96,10 +95,10 @@ function Layout() {
 
 
                         <Card
-                            style={UtilsStore.isDragging ? { width: '100%', background: 'rgb(210, 241, 253)'} : {width: '100%'}}
+                            style={UtilsStore.isDragging ? { width: '100%', background: 'rgb(210, 241, 253)', transition: '0.5s'} : {width: '100%', transition: '0.5s'}}
                             bordered={true}
                             actions={actions()}
-                        >
+                        >   
 
                             <TodoList tasks={GlobalStore.filteredTasks(TaskStore.typeFilter)} />
 
