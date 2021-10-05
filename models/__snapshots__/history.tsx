@@ -27,16 +27,5 @@ export function previousState() {
     undoneStates.unshift(states[currentFrame]);
 
     states.splice(states.length - 1, 1);
-    console.log(currentFrame, states)
-    console.log(undoneStates, states)
-}
 
-export function nextState() {
-    console.log(undoneStates, currentFrameUndone)
-    if (currentFrameUndone === undoneStates.length) return
-    console.log(currentFrameUndone, undoneStates[currentFrameUndone])
-    applySnapshot(store, undoneStates[currentFrameUndone])
-    // undoneStates.splice(undoneStates.length - 1, 1);
-    currentFrameUndone++;
-    
 }

@@ -37,7 +37,6 @@ function Layout() {
     }
 
 
-
     function actions() {
         if (GlobalStore.todosLength > 0) {
             return [
@@ -52,7 +51,7 @@ function Layout() {
                 GlobalStore.todosCompletedLength > 0 ? <Button onClick={(e) => GlobalStore.clearCompleted()}>Clear Completed</Button> : null,
                 <>
                     <Tag color="blue">Undo: Ctrl+Z</Tag>
-                    <Tag color="blue">Redo: Ctrl+Y</Tag>
+                    {/* <Tag color="blue">Redo: Ctrl+Y</Tag> */}
                 </>
 
             ];
